@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "On refuse tout le reste"
+$IPTABLES --append FORWARD --jump DROP
+$IPTABLES --append INPUT   --jump DROP
+$IPTABLES --append OUTPUT  --jump DROP
+
+$IPTABLES -A INPUT   --jump LOG --log-level 7 --log-prefix IPTABLE_DROP_IN:
+$IPTABLES -A OUTPUT  --jump LOG --log-level 7 --log-prefix IPTABLE_DROP_OUT:
+

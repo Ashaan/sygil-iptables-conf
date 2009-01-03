@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "On accepte tout sur '$INTERFACE'"
+$IPTABLES -A INPUT  --in-interface  $INTERFACE -j ACCEPT
+$IPTABLES -A OUTPUT --out-interface $INTERFACE -j ACCEPT
+

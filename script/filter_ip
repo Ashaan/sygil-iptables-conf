@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "On accepte tout en provenance de la WHITELISTE sur '$INTERFACE' :"
+for WHITE in $WHITELIST;
+do
+    echo " - "$WHITE
+    $IPTABLES --append INPUT  --in-interface  $INTERFACE --source      $WHITE --jump ACCEPT
+    $IPTABLES --append OUTPUT --out-interface $INTERFACE --destination $WHITE --jump ACCEPT
+done;
+
+echo "On refuse tout en provenance de la BLACKLIST sur '$INTERFACE' :"
+for BLACK in $BLACKLIST;
+do
+    echo " - "$BLACK
+    $IPTABLES --append INPUT  --in-interface  $INTERFACE --source      $BLACK --jump DROP
+    $IPTABLES --append OUTPUT --out-interface $INTERFACE --destination $BLACK --jump DROP
+done;
+

@@ -1,0 +1,7 @@
+
+#!/bin/sh
+
+echo "On accepte les pings"
+$IPTABLES -A INPUT  -p icmp -j ACCEPT
+$IPTABLES -A OUTPUT -p icmp -j ACCEPT
+

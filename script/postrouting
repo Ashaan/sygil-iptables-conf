@@ -1,0 +1,4 @@
+#!/bin/sh
+
+$IPTABLES -t nat -A POSTROUTING -o $INTERFACE -j MASQUERADE
+

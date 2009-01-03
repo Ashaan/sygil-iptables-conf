@@ -1,0 +1,27 @@
+#!/bin/sh
+ 
+# VARIABLES
+IPTABLES="/sbin/iptables"
+
+# Forward d'ip
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+echo "Initialisation d'iptables"
+$IPTABLES -F
+$IPTABLES -F -t nat
+$IPTABLES -X
+
+echo "On refuse tout par defaut"
+$IPTABLES -P INPUT   DROP
+$IPTABLES -P OUTPUT  DROP
+$IPTABLES -P FORWARD DROP
+
+echo "On accepte les connection etablie"
+$IPTABLES -A INPUT  --protocol icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT  --protocol tcp  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT  --protocol udp  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT --protocol icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT --protocol tcp  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT --protocol udp  -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+

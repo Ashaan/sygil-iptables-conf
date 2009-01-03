@@ -1,0 +1,93 @@
+9
+
+dir
+0
+svn://svn.sygil.org/iptables-sygil/script
+svn://svn.sygil.org/iptables-sygil
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+open
+file
+
+
+
+add
+
+initialize
+file
+
+
+
+add
+
+bandwidth
+file
+
+
+
+add
+
+cleanup_log.save
+file
+
+
+
+add
+
+cleanup
+file
+
+
+
+add
+
+cleanup_log
+file
+
+
+
+add
+
+filter_port
+file
+
+
+
+add
+
+postrouting
+file
+
+
+
+add
+
+ping
+file
+
+
+
+add
+
+filter_ip
+file
+
+
+
+add
+
+save
+file
+
+
+
+add
+

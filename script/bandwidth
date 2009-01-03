@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Activation des logs sur '$INTERFACE'"
+$IPTABLES -A INPUT   --in-interface  $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_IN:
+$IPTABLES -A FORWARD --out-interface $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_OUT:
+$IPTABLES -A FORWARD --in-interface  $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_IN:
+$IPTABLES -A OUTPUT  --out-interface $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_OUT:
+

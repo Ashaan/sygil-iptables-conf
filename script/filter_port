@@ -1,0 +1,45 @@
+#!/bin/sh
+
+
+echo "On accepte les connection entrante de '$INTERFACE' en TCP pour les ports :"
+$IPTABLES --new _TCP_INPUT_$INTERFACE
+for PORT in $TCP_IN;
+do
+    echo " - "$PORT
+    $IPTABLES --append _TCP_INPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
+done;
+$IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol tcp --jump _TCP_INPUT_$INTERFACE
+
+
+
+echo "On accepte les connection sortante vers '$INTERFACE' en TCP pour les ports :"
+$IPTABLES --new _TCP_OUTPUT_$INTERFACE
+for PORT in $TCP_OUT;
+do
+    echo " - "$PORT
+    $IPTABLES --append _TCP_OUTPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
+done;
+$IPTABLES --append INPUT --in-interface $INTERFACE --protocol tcp --jump _TCP_OUTPUT_$INTERFACE
+
+
+
+echo "On accepte les connection entrante de '$INTERFACE' en UDP pour les ports :"
+$IPTABLES --new _UDP_INPUT_$INTERFACE
+for PORT in $UDP_IN;
+do
+    echo " - "$PORT
+    $IPTABLES --append _UDP_INPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
+done;
+$IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol udp --jump _UDP_INPUT_$INTERFACE
+
+
+
+echo "On accepte les connection sortante vers '$INTERFACE' en UDP pour les ports :"
+$IPTABLES --new _UDP_OUTPUT_$INTERFACE
+for PORT in $UDP_OUT;
+do
+    echo " - "$PORT
+    $IPTABLES --append _UDP_OUTPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
+done;
+$IPTABLES --append INPUT --in-interface $INTERFACE --protocol udp --jump _UDP_OUTPUT_$INTERFACE
+

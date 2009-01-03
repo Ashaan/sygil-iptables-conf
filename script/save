@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "On sauvegarde le tout";
+/etc/init.d/iptables save
+/etc/init.d/iptables restart
