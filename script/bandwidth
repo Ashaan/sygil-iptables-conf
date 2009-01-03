@@ -1,6 +1,9 @@
 #!/bin/sh
+# Copyright 2008-2009 Sygil.org
+# Distributed under the terms of the GNU General Public License v2
+# $Header$
 
-echo "Activation des logs sur '$INTERFACE'"
+echo -e "$CBLUE>$CBASE Add Bandwidth log on $CRED$INTERFACE$Cbase"
 $IPTABLES -A INPUT   --in-interface  $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_IN:
 $IPTABLES -A FORWARD --out-interface $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_OUT:
 $IPTABLES -A FORWARD --in-interface  $INTERFACE --jump LOG --log-level 7 --log-prefix BANDWIDTH_IN:

@@ -1,6 +1,9 @@
 #!/bin/sh
+# Copyright 2008-2009 Sygil.org
+# Distributed under the terms of the GNU General Public License v2
+# $Header$
 
-echo "On refuse tout le reste"
+echo -e "$CBLUE>$CBASE Reject All the rest$Cbase"
 $IPTABLES --append FORWARD --jump DROP
 $IPTABLES --append INPUT   --jump DROP
 $IPTABLES --append OUTPUT  --jump DROP

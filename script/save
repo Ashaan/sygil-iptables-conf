@@ -1,5 +1,5 @@
 #!/bin/sh
 
-echo "On sauvegarde le tout";
+echo -e "$CBASE>$CRED Save Rule and Start/restart Iptables (for Gentoo)$Cbase";
 /etc/init.d/iptables save
 /etc/init.d/iptables restart
