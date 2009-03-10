@@ -12,5 +12,6 @@
 # Distributed under the terms of the GNU General Public License v2
 ##
 
+echo -e "$CBLUE>$CBASE Enable PostRouting on $CRED$INTERFACE$CBASE$Cbase"
 $IPTABLES -t nat -A POSTROUTING -o $INTERFACE -j MASQUERADE
 

@@ -12,60 +12,87 @@
 # Distributed under the terms of the GNU General Public License v2
 ##
 
-echo -e "$CBLUE>$CBASE Accept All TCP/IN on $CRED$INTERFACE$CBASE for $Cbase:"
-$IPTABLES --new _TCP_INPUT_$INTERFACE
-PORTS="";COUNT=0;
-for PORT in $TCP_IN;
-do
-    if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
-    PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
-    if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
+if [ "$TCP_IN" != "" ];
+then 
+    echo -e "$CBLUE>$CBASE Accept All TCP/IN on $CRED$INTERFACE$CBASE for $Cbase:"
+    $IPTABLES --new _TCP_INPUT_$INTERFACE
+    PORTS="";COUNT=0;
+    for PORT in $TCP_IN;
+    do
+        if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
+        PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
+        if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
 
-    $IPTABLES --append _TCP_INPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
-done;
-$IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol tcp --jump _TCP_INPUT_$INTERFACE
-if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi 
+        $IPTABLES --append _TCP_INPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
+    done;
+    $IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol tcp --jump _TCP_INPUT_$INTERFACE
+    if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+    if [ $FORWARD = 1 ]; then
+        $IPTABLES --append FORWARD --out-interface $INTERFACE --protocol tcp --jump _TCP_INPUT_$INTERFACE
+        echo -e "$CRED<+$Cbase FORWARD"
+    fi
+fi
+
+if [ "$TCP_OUT" != "" ];
+then
+    echo -e "$CBLUE>$CBASE Accept All TCP/OUT on $CRED$INTERFACE$CBASE for $Cbase:"
+    PORTS="";TEMP="";COUNT=0;
+    $IPTABLES --new _TCP_OUTPUT_$INTERFACE
+    for PORT in $TCP_OUT;
+    do
+        if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
+        PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
+        if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
+
+        $IPTABLES --append _TCP_OUTPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
+    done;
+    $IPTABLES --append INPUT --in-interface $INTERFACE --protocol tcp --jump _TCP_OUTPUT_$INTERFACE
+    if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+    if [ $FORWARD = 1 ]; then
+        $IPTABLES --append FORWARD --in-interface $INTERFACE --protocol tcp --jump _TCP_OUTPUT_$INTERFACE
+        echo -e "$CRED<+$Cbase FORWARD"
+    fi
+fi
 
 
-echo -e "$CBLUE>$CBASE Accept All TCP/OUT on $CRED$INTERFACE$CBASE for $Cbase:"
-TEMP="";COUNT=0;
-$IPTABLES --new _TCP_OUTPUT_$INTERFACE
-for PORT in $TCP_OUT;
-do
-    if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
-    PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
-    if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
+if [ "$UDP_IN" != "" ];
+then
+    echo -e "$CBLUE>$CBASE Accept All UDP/IN on $CRED$INTERFACE$CBASE for $Cbase:"
+    PORTS="";TEMP="";COUNT=0; 
+    $IPTABLES --new _UDP_INPUT_$INTERFACE
+    for PORT in $UDP_IN;
+    do
+        if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
+        PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
+        if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
 
-    $IPTABLES --append _TCP_OUTPUT_$INTERFACE --protocol tcp --destination-port $PORT --jump ACCEPT
-done;
-$IPTABLES --append INPUT --in-interface $INTERFACE --protocol tcp --jump _TCP_OUTPUT_$INTERFACE
-if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+        $IPTABLES --append _UDP_INPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
+    done;
+    $IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol udp --jump _UDP_INPUT_$INTERFACE
+    if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+    if [ $FORWARD = 1 ]; then
+        $IPTABLES --append FORWARD --out-interface $INTERFACE --protocol udp --jump _UDP_INPUT_$INTERFACE
+        echo -e "$CRED<+$Cbase FORWARD"
+    fi
+fi
 
-echo -e "$CBLUE>$CBASE Accept All UDP/IN on $CRED$INTERFACE$CBASE for $Cbase:"
-TEMP="";COUNT=0; 
-$IPTABLES --new _UDP_INPUT_$INTERFACE
-for PORT in $UDP_IN;
-do
-    if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
-    PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
-    if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
+if [ "$UDP_IN" != "" ];
+then
+    echo -e "$CBLUE>$CBASE Accept All UDP/OUT on $CRED$INTERFACE$CBASE for $Cbase:"
+    PORTS="";TEMP="";COUNT=0; 
+    $IPTABLES --new _UDP_OUTPUT_$INTERFACE
+    for PORT in $UDP_OUT;
+    do
+        if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
+        PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
+        if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
 
-    $IPTABLES --append _UDP_INPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
-done;
-$IPTABLES --append OUTPUT --out-interface $INTERFACE --protocol udp --jump _UDP_INPUT_$INTERFACE
-if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
-
-
-echo -e "$CBLUE>$CBASE Accept All UDP/OUT on $CRED$INTERFACE$CBASE for $Cbase:"
-TEMP="";COUNT=0; 
-$IPTABLES --new _UDP_OUTPUT_$INTERFACE
-for PORT in $UDP_OUT;
-do
-    if [ "$PORTS" != "" ]; then PORTS="$PORTS, "; fi
-    PORTS="$PORTS$Cgreen$PORT$Cbase";COUNT=`expr $COUNT + 1`;
-    if [ $COUNT = 5 ]; then echo -e "$CRED<$Cbase $PORTS";PORTS="";COUNT=0; fi
-
-    $IPTABLES --append _UDP_OUTPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
-done;
-$IPTABLES --append INPUT --in-interface $INTERFACE --protocol udp --jump _UDP_OUTPUT_$INTERFACE
-if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+        $IPTABLES --append _UDP_OUTPUT_$INTERFACE --protocol udp --destination-port $PORT --jump ACCEPT
+    done;
+    $IPTABLES --append INPUT --in-interface $INTERFACE --protocol udp --jump _UDP_OUTPUT_$INTERFACE
+    if [ "$PORTS" != "" ]; then  echo -e "$CRED<$Cbase $PORTS"; fi
+    if [ $FORWARD = 1 ]; then
+        $IPTABLES --append FORWARD --in-interface $INTERFACE --protocol udp --jump _UDP_OUTPUT_$INTERFACE
+        echo -e "$CRED<+$Cbase FORWARD"
+    fi
+fi
