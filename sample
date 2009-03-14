@@ -13,17 +13,17 @@ source script/ping
 # Alias
 MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
 SUNUO="ultima-online uo-world"
-# IN  - Server    => ??
-# OUT - ??        => Server
+# OUT - Server    => ??
+# IN  - ??        => Server
 
 INTERFACE=lo
 source script/open
 
 INTERFACE=eth0
-TCP_IN=" ssh domain rndc ntp rsync whois http https smtp                       razor razor-ping ftp ftp-data        svn git"
-TCP_OUT="ssh domain rndc     rsync       http https smtp submission imap imaps       razor-ping ftp ftp-data murmur svn git $MANGOS"
-UDP_IN=" domain          openvpn dcc murmur svn git"
-UDP_OUT="domain rndc ntp openvpn dcc murmur svn git"
+TCP_OUT="ssh domain rndc ntp rsync whois http https smtp                       razor razor-ping ftp ftp-data        svn git"
+TCP_IN=" ssh domain rndc     rsync       http https smtp submission imap imaps       razor-ping ftp ftp-data murmur svn git $MANGOS"
+UDP_OUT="domain          openvpn dcc murmur svn git"
+UDP_IN=" domain rndc ntp openvpn dcc murmur svn git"
 FORWARD=0
 WHITELIST=""
 BLACKLIST="87.164.98.181 89.55.28.219"
@@ -37,20 +37,20 @@ source script/open
 
 # Client OpenVPN (sygil.local) 
 INTERFACE=tap1
-TCP_IN=" microsoft-ds netbios-ssn http https             ssh snmp"
-TCP_OUT="microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd"
-UDP_IN=" netbios-ns netbios-dgm domain rndc snmp ping"
-UDP_OUT="netbios-ns netbios-dgm domain rndc"
+TCP_OUT="microsoft-ds netbios-ssn http https             ssh snmp"
+TCP_IN=" microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd"
+UDP_OUT="netbios-ns netbios-dgm domain rndc snmp ping"
+UDP_IN=" netbios-ns netbios-dgm domain rndc"
 FORWARD=0
 source script/filter_port
 source script/postrouting
 
 # Client OpenVPN (gagiatx.org)
 INTERFACE=tap2
-TCP_IN=" microsoft-ds netbios-ssn ssh"
-TCP_OUT="microsoft-ds netbios-ssn ssh mysql"
-UDP_IN=" netbios-ns netbios-dgm"
+TCP_OUT="microsoft-ds netbios-ssn ssh"
+TCP_IN=" microsoft-ds netbios-ssn ssh mysql"
 UDP_OUT="netbios-ns netbios-dgm"
+UDP_IN=" netbios-ns netbios-dgm"
 ROUTE="192.168.100.0/24"
 FORWARD=1
 source script/filter_port
@@ -58,10 +58,10 @@ source script/postrouting
 
 # Client OpenVPN (mailinblack.local)
 INTERFACE=tun0
-TCP_IN=" ssh"
-TCP_OUT=""
-UDP_IN=""
+TCP_OUT="ssh"
+TCP_IN=""
 UDP_OUT=""
+UDP_IN=""
 WHITELIST=""
 BLACKLIST=""
 ROUTE="192.168.9.0/24 192.168.10.0/24 192.168.11.0/24 192.168.12.0/24"
