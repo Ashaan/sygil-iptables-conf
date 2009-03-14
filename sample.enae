@@ -1,0 +1,43 @@
+#!/bin/sh
+# Copyright 2008-2009 Sygil.org
+# Distributed under the terms of the GNU General Public License v2
+# $Header$
+
+cd /etc/iptables
+IPTABLES="/sbin/iptables"
+
+source script/color
+source script/initialize
+source script/ping
+
+# Alias
+MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
+SUNUO="ultima-online uo-world"
+# IN  - Server    => ??
+# OUT - ??        => Server
+
+INTERFACE=lo
+FORWARD=0
+source script/open
+
+# C'est la Router Netgear qui protege le reseau
+INTERFACE=eth0
+FORWARD=1
+source script/open
+source script/postrouting
+
+# Client OpenVPN (sygil.local) 
+INTERFACE=tap0
+TCP_IN=" microsoft-ds netbios-ssn http https             ssh snmp"
+TCP_OUT="microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd"
+UDP_IN=" netbios-ns netbios-dgm domain rndc snmp ping"
+UDP_OUT="netbios-ns netbios-dgm domain rndc"
+FORWARD=1
+source script/filter_port
+source script/postrouting
+
+
+source script/cleanup
+source script/save
+
+
