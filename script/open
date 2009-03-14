@@ -15,4 +15,9 @@
 echo -e "$CBLUE>$CBASE Accepte all on $CRED$INTERFACE$Cbase"
 $IPTABLES -A INPUT  --in-interface  $INTERFACE -j ACCEPT
 $IPTABLES -A OUTPUT --out-interface $INTERFACE -j ACCEPT
+if [ $FORWARD = 1 ]; then
+    $IPTABLES -A FORWARD --in-interface $INTERFACE -j ACCEPT
+    $IPTABLES -A FORWARD --out-interface $INTERFACE -j ACCEPT
+    echo -e "$CRED<+$Cbase FORWARD"
+fi
 
