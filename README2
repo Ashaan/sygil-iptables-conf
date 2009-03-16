@@ -1,0 +1,50 @@
+Function: script/initialize
+> Remet a 0 le firwall
+
+Function: script/ping
+> Active le Ping
+
+Param: INTERFACE
+> Specifie l'interface courante: eth0, eth1, lo, tap0, tun0, br0 ...
+
+Param: FORWARD
+> Specifie si le forward des ports est activé ou pas (1/0)
+
+Function: script/open
+< INTERFACE, FORWARD
+> Ouvre par defaut tout les ports pour une INTERFACE donnée, si forward est a 1, gere le forward des ports
+
+Param: TCP_IN
+> Liste de port TCP/IP pouvant entrée dans la machine
+Param: TCP_OUT
+> Liste de port TCP/IP pouvant sortir de la machine
+Param: UDP_IN
+> Liste de port UDP/IP pouvant entrée dans la machine
+Param: UDP_OUT
+> Liste de port UDP/IP pouvant sortir de la machine
+
+Function: script/filter_port
+< INTERFACE, FORWARD, TCP_IN, TCP_OUT, UDP_IN, UDP_OUT
+> Authorise au port listé d'entrée/sortir et d'etre relayer selon les options
+
+Param: WHITELIST
+> Liste d'IP a Whitelister (tout les ports sont ouvert pour cette IP)
+Param: BLACKLIST
+> Liste d'IP a Blacklister (tout les ports sont fermer pour cette IP)
+
+Function: script/filter_ip
+< INTERFACE, BLACKLIST, WHITELIST
+> Blackliste et whiteliste des IPs
+
+Function: script/bandwidth
+> Active les log bandwidth necessaire pour le calcule d'utilisation de la bande passante (entre autre avec le script fournit par webmin) 
+
+Param: LOG_REJECT
+> Active (O/1) le lagage des rejets de connection (conseil a utiliser uniquement lors de la premier configuration pour ouvrir tout les port necessaire)
+
+Function: script/cleanup
+< LOG_REJECT 
+> Ferme tout ce qui a pas été ouvert
+
+Function: script/save
+> Sauvegarde des regles IPTABLES pour qu'elle soit prise en compte en cas de redemarrage de la machine
