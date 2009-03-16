@@ -13,6 +13,7 @@
 ##
 
 echo -e "$CBLUE>$CBASE Accept ICMP PING$Cbase"
-$IPTABLES -A INPUT  -p icmp -j ACCEPT
-$IPTABLES -A OUTPUT -p icmp -j ACCEPT
+$IPTABLES -A INPUT   -p icmp -j ACCEPT
+$IPTABLES -A OUTPUT  -p icmp -j ACCEPT
+$IPTABLES -A FORWARD -p icmp -j ACCEPT
 

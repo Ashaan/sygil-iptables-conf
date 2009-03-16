@@ -18,7 +18,9 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 echo -e "$CBLUE>$CBASE Reset Iptables$Cbase"
 $IPTABLES -F
 $IPTABLES -F -t nat
+$IPTABLES -F -t mangle
 $IPTABLES -X
+$IPTABLES -Z
 
 echo -e "$CBLUE>$CBASE Reject All By Default$Cbase"
 $IPTABLES -P INPUT   DROP
