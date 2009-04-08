@@ -19,11 +19,16 @@ source script/open
 
 MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
 SUNUO="ultima-online uo-world"
+JABBER="jabber-router jabber-s2s jabber-c2s"
+EJABBER="5280 38181 5222 4369 5269"
+TORRENT="64000:65000"
+TCPBASE="ssh domain rndc ntp rsync http https smtp razor-ping ftp ftp-data svn git ldaps"
+UDPBASE="domain ntp openvpn dcc murmur svn git"
 INTERFACE=eth0
-TCP_OUT="ssh domain rndc ntp rsync whois http https smtp                       razor razor-ping ftp ftp-data        svn git"
-TCP_IN=" ssh domain rndc     rsync       http https smtp submission imap imaps       razor-ping ftp ftp-data murmur svn git $MANGOS"
-UDP_OUT="domain          openvpn dcc murmur svn git"
-UDP_IN=" domain rndc ntp openvpn dcc murmur svn git"
+TCP_OUT="$TCPBASE whois                       razor        $JABBER"
+TCP_IN=" $TCPBASE       submission imap imaps       murmur $JABBER $MANGOS wesnothd"
+UDP_OUT="$UDPBASE "
+UDP_IN=" $UDPBASE rndc"
 FORWARD=0
 WHITELIST=""
 BLACKLIST=""
@@ -41,10 +46,10 @@ source script/open
 
 # Client OpenVPN (sygil.local) 
 INTERFACE=tap1
-TCP_OUT="microsoft-ds netbios-ssn             http https             ftp ftp-data ssh snmp"
-TCP_IN=" microsoft-ds netbios-ssn domain rndc http https webmin ntop ftp ftp-data ssh      mysql gkrellmd"
-UDP_OUT="netbios-ns netbios-dgm domain rndc snmp ping"
-UDP_IN=" netbios-ns netbios-dgm domain rndc"
+TCP_OUT="microsoft-ds netbios-ssn deluge             http https             ftp ftp-data ssh ldap snmp"
+TCP_IN=" microsoft-ds netbios-ssn deluge domain rndc http https webmin ntop ftp ftp-data ssh ldap      mysql gkrellmd"
+UDP_OUT="netbios-ns netbios-dgm deluge domain rndc snmp ping"
+UDP_IN=" netbios-ns netbios-dgm deluge domain rndc"
 FORWARD=0
 source script/filter_port
 source script/postrouting
