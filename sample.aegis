@@ -1,0 +1,84 @@
+#!/bin/sh
+# Copyright 2008-2009 Sygil.org
+# Distributed under the terms of the GNU General Public License v2
+##
+# Cette configuration correspond a un server gerant plein de service, proposant un vpn limité et se connectant a d'autre vpn qu'il relie entre eux
+##
+
+cd /data/iptables
+IPTABLES="/sbin/iptables"
+
+source script/color
+source script/initialize
+source script/ping
+
+
+INTERFACE=lo
+FORWARD=0
+source script/open
+
+MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
+SUNUO="ultima-online uo-world"
+JABBER="jabber-router jabber-s2s jabber-c2s"
+EJABBER="5280 38181 5222 4369 5269"
+TORRENT="64000:65000"
+TCPBASE="ssh domain rndc ntp rsync http https smtp razor-ping ftp ftp-data svn git ldaps"
+UDPBASE="domain ntp openvpn dcc murmur svn git"
+INTERFACE=eth0
+TCP_OUT="$TCPBASE whois                       razor        $JABBER"
+TCP_IN=" $TCPBASE       submission imap imaps       murmur $JABBER $MANGOS wesnothd"
+UDP_OUT="$UDPBASE "
+UDP_IN=" $UDPBASE rndc"
+FORWARD=0
+WHITELIST=""
+BLACKLIST=""
+# Attaque FTP
+BLACKLIST="$BLACKLIST 87.164.98.181 89.55.28.219"
+# Boulet (Samba Spam)
+BLACKLIST="$BLACKLIST 91.121.93.220 91.121.93.97 91.121.93.91 91.121.93.9 91.121.93.15 91.121.93.40 91.121.93.45 91.121.93.61 91.121.93.63 91.121.93.76 91.121.93.95 91.121.93.125 91.121.93.131 91.121.93.148 91.121.93.150 91.121.93.151 91.121.93.152 91.121.93.154 91.121.93.167 91.121.93.169 91.121.93.204 91.121.93.228"
+source script/bandwidth
+source script/filter_ip
+source script/filter_port
+
+# Server OpenVPN (Probablement inutile)
+INTERFACE=tap0
+source script/open
+
+# Client OpenVPN (sygil.local) 
+INTERFACE=tap1
+TCP_OUT="microsoft-ds netbios-ssn deluge             http https             ftp ftp-data ssh ldap snmp"
+TCP_IN=" microsoft-ds netbios-ssn deluge domain rndc http https webmin ntop ftp ftp-data ssh ldap      mysql gkrellmd"
+UDP_OUT="netbios-ns netbios-dgm deluge domain rndc snmp ping"
+UDP_IN=" netbios-ns netbios-dgm deluge domain rndc"
+FORWARD=0
+source script/filter_port
+source script/postrouting
+
+# Client OpenVPN (gagiatx.org)
+INTERFACE=tap2
+TCP_OUT="microsoft-ds netbios-ssn ssh       http https ftp ftp-data"
+TCP_IN=" microsoft-ds netbios-ssn ssh mysql http https ftp ftp-data"
+UDP_OUT="netbios-ns netbios-dgm"
+UDP_IN=" netbios-ns netbios-dgm"
+ROUTE="192.168.100.0/24"
+FORWARD=1
+source script/filter_port
+source script/postrouting
+
+# Client OpenVPN (mailinblack.local)
+INTERFACE=tun0
+TCP_OUT="ssh http https"
+TCP_IN=""
+UDP_OUT=""
+UDP_IN=""
+FORWARD=1
+source script/filter_port
+source script/postrouting
+
+
+
+LOG_REJECT=1
+source script/cleanup
+source script/save
+
+ 

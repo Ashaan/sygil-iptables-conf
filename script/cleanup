@@ -13,7 +13,30 @@
 ##
 
 echo -e "$CBLUE>$CBASE Reject All the rest$Cbase"
-$IPTABLES --append FORWARD --jump DROP
-$IPTABLES --append INPUT   --jump DROP
-$IPTABLES --append OUTPUT  --jump DROP
+
+if [ $LOG_REJECT = 1 ];
+then
+    $IPTABLES -N INPUT_REJECT_LOG
+    $IPTABLES -A INPUT_REJECT_LOG -j LOG --log-level info  --log-prefix IPTABLE_INPUT_REJECT:
+    $IPTABLES -A INPUT_REJECT_LOG -j REJECT
+    $IPTABLES -A INPUT            -j INPUT_REJECT_LOG
+
+    $IPTABLES -N OUTPUT_REJECT_LOG
+    $IPTABLES -A OUTPUT_REJECT_LOG -j LOG --log-level info  --log-prefix IPTABLE_OUTPUT_REJECT:
+    $IPTABLES -A OUTPUT_REJECT_LOG -j REJECT
+    $IPTABLES -A OUTPUT            -j OUTPUT_REJECT_LOG
+
+    $IPTABLES -N FORWARD_REJECT_LOG
+    $IPTABLES -A FORWARD_REJECT_LOG -j LOG --log-level info  --log-prefix IPTABLE_FORWARD_REJECT:
+    $IPTABLES -A FORWARD_REJECT_LOG -j REJECT
+    $IPTABLES -A FORWARD            -j FORWARD_REJECT_LOG
+fi
+
+if [ $LOG_REJECT = 0 ];
+then
+    $IPTABLES -A INPUT    -j DROP
+    $IPTABLES -A OUTPUT   -j DROP
+    $IPTABLES -A FORWARD  -j DROP
+fi
+
 

@@ -11,8 +11,11 @@ source script/initialize
 source script/ping
 
 # Alias
-MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
-SUNUO="ultima-online uo-world"
+# pour specifier une plage de port ou un groupe de port 
+# lier a un logiciel specifique
+
+#exemple="27015:27020"
+
 # OUT - Server    => ??
 # IN  - ??        => Server
 
@@ -20,23 +23,28 @@ INTERFACE=lo
 source script/open
 
 INTERFACE=eth0
-TCP_OUT="ssh domain rndc ntp rsync whois http https smtp                       razor razor-ping ftp ftp-data        svn git"
-TCP_IN=" ssh domain rndc     rsync       http https smtp submission imap imaps       razor-ping ftp ftp-data murmur svn git $MANGOS"
-UDP_OUT="domain          openvpn dcc murmur svn git"
-UDP_IN=" domain rndc ntp openvpn dcc murmur svn git"
+
+# ajout des alias de la maniere suivante:
+# TCP_OUT="$exemple"
+TCP_OUT="ssh domain rndc rsync whois http https smtp                       ftp ftp-data svn git"
+TCP_IN=" ssh domain rndc rsync       http https smtp submission imap imaps ftp ftp-data svn git"
+
+UDP_OUT="domain      svn git"
+UDP_IN=" domain rndc svn git"
+
 FORWARD=0
 WHITELIST=""
+# Server ayant effectuer une attaque
 BLACKLIST="87.164.98.181 89.55.28.219"
+
 source script/bandwidth
 source script/filter_ip
 source script/filter_port
 
-# Server OpenVPN (Probablement inutile)
-INTERFACE=tap0
-source script/open
+# Si vous avez plusieurs carte reseau ou un Client OpenVPN 
+# specifier l'interface (voir ifconfig)
 
-# Client OpenVPN (sygil.local) 
-INTERFACE=tap1
+INTERFACE=eth1
 TCP_OUT="microsoft-ds netbios-ssn http https             ssh snmp"
 TCP_IN=" microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd"
 UDP_OUT="netbios-ns netbios-dgm domain rndc snmp ping"
@@ -44,31 +52,6 @@ UDP_IN=" netbios-ns netbios-dgm domain rndc"
 FORWARD=0
 source script/filter_port
 source script/postrouting
-
-# Client OpenVPN (gagiatx.org)
-INTERFACE=tap2
-TCP_OUT="microsoft-ds netbios-ssn ssh"
-TCP_IN=" microsoft-ds netbios-ssn ssh mysql"
-UDP_OUT="netbios-ns netbios-dgm"
-UDP_IN=" netbios-ns netbios-dgm"
-ROUTE="192.168.100.0/24"
-FORWARD=1
-source script/filter_port
-source script/postrouting
-
-# Client OpenVPN (mailinblack.local)
-INTERFACE=tun0
-TCP_OUT="ssh"
-TCP_IN=""
-UDP_OUT=""
-UDP_IN=""
-WHITELIST=""
-BLACKLIST=""
-ROUTE="192.168.9.0/24 192.168.10.0/24 192.168.11.0/24 192.168.12.0/24"
-FORWARD=1
-source script/filter_port
-source script/postrouting
-
 
 
 source script/cleanup
