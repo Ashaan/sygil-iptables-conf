@@ -24,8 +24,8 @@ source script/postrouting
 
 # Client OpenVPN (sygil.local) 
 INTERFACE=tap0
-TCP_IN=" microsoft-ds netbios-ssn http https             ssh snmp"
-TCP_OUT="microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd"
+TCP_IN=" 58846 microsoft-ds netbios-ssn http https             ssh snmp"
+TCP_OUT="58846 microsoft-ds netbios-ssn http https webmin ntop ssh      domain rndc mysql gkrellmd 5900"
 UDP_IN=" netbios-ns netbios-dgm domain rndc snmp ping"
 UDP_OUT="netbios-ns netbios-dgm domain rndc"
 FORWARD=1
