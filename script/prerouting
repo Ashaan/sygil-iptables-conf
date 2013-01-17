@@ -1,0 +1,3 @@
+iptables -A FORWARD -p tcp -i $PR_INTERFACE -d $PR_IP --dport $PR_PORT -j ACCEPT
+iptables -t nat -A PREROUTING -i $INTERFACE -p tcp --dport $PR_PORT  -j DNAT --to-destination $PR_IP
+echo "route port $PR_PORT in $INTERFACE to $PR_IP using $PR_INTERFACE"
