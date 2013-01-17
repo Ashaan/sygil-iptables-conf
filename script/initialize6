@@ -27,14 +27,14 @@ $IPTABLES -P OUTPUT  DROP
 $IPTABLES -P FORWARD DROP
 
 echo -e "$CBLUE>$CBASE Accepte Established connection$Cbase"
-$IPTABLES -A INPUT   --protocol icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A INPUT   --protocol tcp  -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A INPUT   --protocol udp  -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A OUTPUT  --protocol icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A OUTPUT  --protocol tcp  -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A OUTPUT  --protocol udp  -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A FORWARD --protocol icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A FORWARD --protocol tcp  -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -A FORWARD --protocol udp  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT   --protocol icmp -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT   --protocol tcp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT   --protocol udp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT  --protocol icmp -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT  --protocol tcp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A OUTPUT  --protocol udp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A FORWARD --protocol icmp -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A FORWARD --protocol tcp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A FORWARD --protocol udp  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 

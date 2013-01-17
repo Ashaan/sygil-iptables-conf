@@ -14,30 +14,35 @@
 
 if [ "$WHITELIST" != "" ];
 then
-    echo -e "$CBLUE>$CBASE Accept All on $CRED$INTERFACE$CBASE from:$Cbase"
+    echo -e "$CBLUE>$CBASE Accept All on $CRED$CBASE from:$Cbase"
 
     TEMP=""
     for WHITE in $WHITELIST;
     do
         if [ "$TEMP" != "" ]; then TEMP="$TEMP, "; fi
         TEMP="$TEMP$Cgreen$WHITE$Cbase"
-        $IPTABLES --append INPUT  --in-interface  $INTERFACE --source      $WHITE --jump ACCEPT
-        $IPTABLES --append OUTPUT --out-interface $INTERFACE --destination $WHITE --jump ACCEPT
+        $IPTABLES --append INPUT   --source      $WHITE --jump ACCEPT
+        $IPTABLES --append OUTPUT  --destination $WHITE --jump ACCEPT
+	$IPTABLES --append FORWARD --source      $WHITE --jump ACCEPT
+        $IPTABLES --append FORWARD --destination $WHITE --jump ACCEPT
+
     done;
     echo -e "$CRED<$Cbase $TEMP"
 fi;
 
 if [ "$BLACKLIST" != "" ];
 then
-    echo -e "$CBLUE>$CBASE Reject All on $CRED$INTERFACE$CBASE from: $Cbase"
+    echo -e "$CBLUE>$CBASE Reject All on $CRED$CBASE from: $Cbase"
 
     TEMP=""
     for BLACK in $BLACKLIST;
     do
         if [ "$TEMP" != "" ]; then TEMP="$TEMP, "; fi
         TEMP="$TEMP$Cgreen$BLACK$Cbase"
-        $IPTABLES --append INPUT  --in-interface  $INTERFACE --source      $BLACK --jump DROP
-        $IPTABLES --append OUTPUT --out-interface $INTERFACE --destination $BLACK --jump DROP
-    done;
+        $IPTABLES --append INPUT   --source      $BLACK --jump DROP
+        $IPTABLES --append OUTPUT  --destination $BLACK --jump DROP
+        $IPTABLES --append FORWARD --source      $BLACK --jump DROP
+        $IPTABLES --append FORWARD --destination $BLACK --jump DROP
+	done;
     echo -e "$CRED<$Cbase $TEMP"
 fi;
