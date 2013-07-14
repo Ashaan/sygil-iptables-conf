@@ -16,19 +16,13 @@ INTERFACE=lo
 FORWARD=0
 source script/open
 
-# C'est la Router Netgear qui protege le reseau
+# Reseau sans firewall
 INTERFACE=eth0
 FORWARD=1
 source script/open
 source script/postrouting
 
-# C'est la Router Netgear qui protege le reseau
-INTERFACE=tap0
-FORWARD=1
-source script/open
-source script/postrouting
-
-# C'est la Router Netgear qui protege le reseau
+# Reseau sans firewall
 INTERFACE=tap1 
 FORWARD=1
 source script/open

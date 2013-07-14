@@ -17,6 +17,7 @@ INTERFACE=lo
 FORWARD=0
 source script/open
 
+# WAN
 MANGOS="mangos-realm mangos-world-000 mangos-world-243 mangos-world-303"
 SUNUO="ultima-online uo-world"
 JABBER="jabber-router jabber-s2s jabber-c2s"
@@ -43,11 +44,11 @@ source script/bandwidth
 source script/filter_ip
 source script/filter_port
 
-# Server OpenVPN (Probablement inutile)
+# Server OpenVPN 1 (Probablement inutile)
 INTERFACE=tap0
 source script/open
 
-# Client OpenVPN (sygil.local) 
+# Client OpenVPN 1
 INTERFACE=tap1
 TCP_OUT="microsoft-ds netbios-ssn deluge             http https             ftp ftp-data ssh ldap snmp"
 TCP_IN=" microsoft-ds netbios-ssn deluge domain rndc http https webmin ntop ftp ftp-data ssh ldap      mysql gkrellmd"
@@ -57,7 +58,7 @@ FORWARD=0
 source script/filter_port
 source script/postrouting
 
-# Client OpenVPN (gagiatx.org)
+# Client OpenVPN 2
 INTERFACE=tap2
 TCP_OUT="microsoft-ds netbios-ssn ssh       http https ftp ftp-data"
 TCP_IN=" microsoft-ds netbios-ssn ssh mysql http https ftp ftp-data"
@@ -68,7 +69,7 @@ FORWARD=1
 source script/filter_port
 source script/postrouting
 
-# Client OpenVPN (mailinblack.local)
+# Client OpenVPN 3
 INTERFACE=tun0
 TCP_OUT="ssh http https"
 TCP_IN=""
@@ -77,7 +78,6 @@ UDP_IN=""
 FORWARD=1
 source script/filter_port
 source script/postrouting
-
 
 
 LOG_REJECT=1
