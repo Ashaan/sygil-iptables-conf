@@ -2,7 +2,7 @@
 -------- Iptable sygil ----------
 ---------------------------------
 The orignal version of portal master was created and maintained by Mathieu Chocat.
-	(http://www.sygil.org/)
+	(http://gitlab.sygil.org/iptables)
 	
 -------------------------------
 -----------Credits-------------
@@ -15,7 +15,7 @@ Mathieu Chocat - For creating and maintaing the portal.
 
 1.a Download the iptables-master.zip
 	OR
-1.b git clone git://git.sygil.org/iptables.git /your/directory/
+1.b git clone http://gitlab.sygil.org/iptables.git /your/directory/
 
 2. copy sample to your file starting name
 	cp sample iptables.sh
@@ -36,7 +36,7 @@ and execute git pull
 	
 OR
 	
-download the new portal-master.zip on http://sygil.org
+download the new iptables.zip on http://gitlab.sygil.org/iptables/
 	
 	
 -----------------------------------
